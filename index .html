@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,400;1,100;1,300;1,400&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="/sass/dist/styles.css">
+    <title>Biletas</title>
+  </head>
+  <body>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Dear Passanger here is details of your flight</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-md-12">
+                    <p id="person">Name surname</p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-8">
+                    <div class="row">
+                      <div class="col-md-4">
+                        <p id="data">DATA</p>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="row">
+                          <p id="from">FROM</p>
+                        </div>
+                        <div class="row">
+                          <p id="to">TO</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div id="timefrom" class="col-md-3">
+                        TimeFrom
+                      </div>
+                      <div id="timeto" class="col-md-3">
+                        TimeTo
+                      </div>
+                      <div id="duration" class="col-md-3">
+                        Duration
+                      </div>
+                      <div id="flightID" class="col-md-3">
+                        flightNumber
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <p id="notes">NOTES</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <p id="bill">BILLING:</p>
+                      </div>
+                      <div class="col-md-12">
+                        <p id="price">Price</p>
+                      </div>
+                      <div class="col-md-12">
+                        <p id="luggage">Luggage fee</p>
+                      </div>
+                      <div class="col-md-12">
+                        <p id="total">Total</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+          <div class="modal-footer">
+          
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="row justify-content-center">
+        <h1>Columbian skies airlines</h1>
+      </div>  
+      <div class="row justify-content-center">
+        <h3>Do not miss your chance for your life's holidays and everlasting memories</h3>
+      </div>  
+      <div class="row justify-content-center">
+        <button class="booking btn btn-primary col-sm-2 ">Cheap flights booking</button>
+      </div>  
+      <div class="d-none" id="formShow">
+        <div class="row justify-content-center">
+          <form class="form">
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="inputName">Name</label>
+                <input type="text" class="form-control" id="Name">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="inputPassword4">Surname</label>
+                <input type="text" class="form-control" id="Surname">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputAddress">ID code</label>
+              <input type="text" class="form-control" id="ID" placeholder="ID">
+            </div>
+            <div class="form-group">
+              <label for="inputAddress2">Notes</label>
+              <input type="text" class="form-control" id="Notes" placeholder="Notes..">
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <label for="inputState">From</label>
+                <select id="inputFrom" class="form-control city">
+                  <option selected>Choose...</option>
+                  <option>...</option>
+                </select>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="inputState">To</label>
+                <select id="inputTo" class="form-control cityTo">
+                  <option selected>Choose...</option>
+                  <option>...</option>
+                </select>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="inputState">Luggage, kg</label>
+                <select id="bags" class="form-control">
+                  <option selected>Choose...</option>
+                  <option>10</option>
+                  <option>20</option>
+                  <option>30</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Book now</button>
+          </form>
+        </div> 
+      </div>
+      <div id="print" class="d-none">
+        <div class="row justify-content-center">
+          <button class="btn btn-primary col-sm-2 print" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Print details of your flight</button>
+          <p class="message"></p>
+        </div>
+      </div>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+		<script src="https://kit.fontawesome.com/04b00d367c.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="/js/ticket.js"></script>
+  </body>
+</html>

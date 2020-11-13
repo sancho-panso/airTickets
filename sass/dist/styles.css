@@ -1,0 +1,39 @@
+body {
+  background-image: url("/img/air.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: #1a72ca;
+  color: white;
+  font-family: "Roboto", sans-serif;
+}
+
+.btn-primary {
+  margin: 10px;
+  background-color: #8c56be;
+}
+
+.btn-primary:hover, .btn-primary.focus {
+  background-color: #8c56be;
+}
+
+.btn-primary:focus {
+  background-color: #8c56be;
+}
+
+.modal-dialog {
+  max-width: 80%;
+}
+
+h1, h3 {
+  margin: 20px;
+}
+
+.modal-content {
+  background: #302e6f;
+  background: linear-gradient(331deg, #302e6f 0%, #3d3d85 13%, #83e8fc 100%);
+  color: black;
+}
+
+.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show > .btn-primary.dropdown-toggle {
+  background-color: #8c56be;
+}
