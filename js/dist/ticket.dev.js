@@ -10,14 +10,32 @@ var to = document.getElementById('inputTo');
 var luggage = document.getElementById('bags');
 var storage;
 
+window.onload = function () {
+  //var reloading = sessionStorage.getItem("reloading");
+  var storage = JSON.parse(localStorage.getItem('savedBooking'));
+  console.log(storage);
+  console.log(storage.valid);
+
+  if (storage.valid) {
+    //sessionStorage.removeItem("reloading");
+    console.log("test");
+    document.getElementById('print').className = '';
+  } else {
+    document.getElementById('print').className = 'd-none';
+  }
+};
+
 forma.onsubmit = function (e) {
-  e.preventDefault();
+  //      e.preventDefault();
+  var flight = new Flight();
 
   if (name.value === '' || surname.value === '' || ID.value === '' || to.value === 'Choose...' || from.value === 'Choose...' || luggage.value === 'Choose...') {
+    e.preventDefault();
+    flight.valid = false;
+    storage = localStorage.setItem('savedBooking', JSON.stringify(flight));
+    document.getElementById('print').className = 'd-none';
     alert("Please fill all required fields");
   } else {
-    document.getElementById('print').className = '';
-    var flight = new Flight();
     flight.number = Math.floor(Math.random() * 100) + 10 + "ABC";
     flight.userName = name.value;
     flight.userSurName = surname.value;
@@ -27,11 +45,12 @@ forma.onsubmit = function (e) {
     flight.price = Math.floor(Math.random() * 100) + 10;
     flight.luggage = luggage.value;
     flight.notes = notes.value;
+    flight.valid = true;
     storage = localStorage.setItem('savedBooking', JSON.stringify(flight));
   }
 };
 
-function Flight(number, userName, userSurName, userID, flightFrom, flightTo, price, luggage, notes) {
+function Flight(number, userName, userSurName, userID, flightFrom, flightTo, price, luggage, notes, valid) {
   var flight = {};
   flight.number = number;
   flight.userName = userName;
@@ -42,6 +61,7 @@ function Flight(number, userName, userSurName, userID, flightFrom, flightTo, pri
   flight.price = price;
   flight.luggage = luggage;
   flight.notes = notes;
+  flight.valid = valid;
   return flight;
 }
 
@@ -74,12 +94,14 @@ function Flight(number, userName, userSurName, userID, flightFrom, flightTo, pri
 })();
 
 document.querySelector('.booking').onclick = function () {
+  //  storage = JSON.parse(localStorage.getItem('savedBooking'))
+  //  console.log(storage);
   document.querySelector('#formShow').className = '';
 };
 
 document.querySelector('.print').onclick = function () {
+  document.querySelector('#formShow').className = 'd-none';
   storage = JSON.parse(localStorage.getItem('savedBooking'));
-  console.log(storage);
   document.getElementById('person').innerHTML = storage.userName + " " + storage.userSurName + " ID: " + storage.userID;
   document.getElementById('data').innerHTML = "DATA: " + Date().slice(0, 15);
   document.getElementById('from').innerHTML = "FROM: " + storage.flightFrom;
