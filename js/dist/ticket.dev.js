@@ -1,5 +1,6 @@
 "use strict";
 
+// declare variables for form elements and localStorage
 var forma = document.querySelector('.form');
 var name = document.getElementById('Name');
 var surname = document.getElementById('Surname');
@@ -8,25 +9,63 @@ var notes = document.getElementById('Notes');
 var from = document.getElementById('inputFrom');
 var to = document.getElementById('inputTo');
 var luggage = document.getElementById('bags');
-var storage;
+var storage; //actions on page upload or reload
 
 window.onload = function () {
-  //var reloading = sessionStorage.getItem("reloading");
+  //check if localStorage contains valid data for ticket printing
+  //if data ok shows print button
   var storage = JSON.parse(localStorage.getItem('savedBooking'));
-  console.log(storage);
-  console.log(storage.valid);
 
   if (storage.valid) {
-    //sessionStorage.removeItem("reloading");
-    console.log("test");
     document.getElementById('print').className = '';
   } else {
     document.getElementById('print').className = 'd-none';
   }
-};
+
+  destinations();
+}; //get data from API and populate destination options
+
+
+function destinations() {
+  return regeneratorRuntime.async(function destinations$(_context) {
+    while (1) {
+      switch (_context.prev = _context.next) {
+        case 0:
+          _context.next = 2;
+          return regeneratorRuntime.awrap(fetch('https://public.opendatasoft.com/api/records/1.0/search/?dataset=geonames-all-cities-with-a-population-1000').then(function (res) {
+            return res.json();
+          }).then(function (places) {
+            console.log(places);
+            var optionList = document.querySelector('.city');
+            var optionList2 = document.querySelector('.cityTo');
+
+            for (var index = 0; index < places.records.length; index++) {
+              var option = document.createElement('option');
+              option.value = places.records[index].fields.name;
+              option.innerText = places.records[index].fields.name;
+              optionList.appendChild(option);
+              var option2 = document.createElement('option');
+              option2.value = places.records[index].fields.name;
+              option2.innerText = places.records[index].fields.name;
+              optionList2.appendChild(option2);
+            }
+          }));
+
+        case 2:
+          info = _context.sent;
+
+        case 3:
+        case "end":
+          return _context.stop();
+      }
+    }
+  });
+}
+
+; // onsubmit function is triggered by pressing BookNow button
+// form validation, data load to localStorage
 
 forma.onsubmit = function (e) {
-  //      e.preventDefault();
   var flight = new Flight();
 
   if (name.value === '' || surname.value === '' || ID.value === '' || to.value === 'Choose...' || from.value === 'Choose...' || luggage.value === 'Choose...') {
@@ -48,7 +87,8 @@ forma.onsubmit = function (e) {
     flight.valid = true;
     storage = localStorage.setItem('savedBooking', JSON.stringify(flight));
   }
-};
+}; //flight object constractor
+
 
 function Flight(number, userName, userSurName, userID, flightFrom, flightTo, price, luggage, notes, valid) {
   var flight = {};
@@ -65,39 +105,12 @@ function Flight(number, userName, userSurName, userID, flightFrom, flightTo, pri
   return flight;
 }
 
-;
-
-(function () {
-  var xhr = new XMLHttpRequest();
-
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState === 4) {
-      var places = JSON.parse(xhr.responseText);
-      var optionList = document.querySelector('.city');
-      var optionList2 = document.querySelector('.cityTo');
-
-      for (var index = 0; index < places.records.length; index++) {
-        var option = document.createElement('option');
-        option.value = places.records[index].fields.name;
-        option.innerText = places.records[index].fields.name;
-        optionList.appendChild(option);
-        var option2 = document.createElement('option');
-        option2.value = places.records[index].fields.name;
-        option2.innerText = places.records[index].fields.name;
-        optionList2.appendChild(option2);
-      }
-    }
-  };
-
-  xhr.open('GET', 'https://public.opendatasoft.com/api/records/1.0/search/?dataset=geonames-all-cities-with-a-population-1000');
-  xhr.send();
-})();
+; // button "Cheap flights booking" on click function shows form
 
 document.querySelector('.booking').onclick = function () {
-  //  storage = JSON.parse(localStorage.getItem('savedBooking'))
-  //  console.log(storage);
   document.querySelector('#formShow').className = '';
-};
+}; // button "Print details of your flight" on click function shows modal window   
+
 
 document.querySelector('.print').onclick = function () {
   document.querySelector('#formShow').className = 'd-none';
@@ -119,4 +132,36 @@ document.querySelector('.print').onclick = function () {
   var total = storage.price + fee;
   document.getElementById('luggage').innerHTML = "Luggage fee: " + fee + " USD";
   document.getElementById('total').innerHTML = "Total: " + total + " USD";
-};
+}; //this function is not used on this page version
+
+
+function getByHttpRequest() {
+  var xhr = new XMLHttpRequest();
+
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4) {
+      var places = JSON.parse(xhr.responseText);
+
+      var _optionList = document.querySelector('.city');
+
+      var _optionList2 = document.querySelector('.cityTo');
+
+      for (var index = 0; index < places.records.length; index++) {
+        var option = document.createElement('option');
+        option.value = places.records[index].fields.name;
+        option.innerText = places.records[index].fields.name;
+
+        _optionList.appendChild(option);
+
+        var option2 = document.createElement('option');
+        option2.value = places.records[index].fields.name;
+        option2.innerText = places.records[index].fields.name;
+
+        _optionList2.appendChild(option2);
+      }
+    }
+  };
+
+  xhr.open('GET', 'https://public.opendatasoft.com/api/records/1.0/search/?dataset=geonames-all-cities-with-a-population-1000');
+  xhr.send();
+}

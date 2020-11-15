@@ -1,3 +1,4 @@
+// declare variables for form elements and localStorage
 let forma = document.querySelector('.form');
 let name = document.getElementById('Name');
 let surname = document.getElementById('Surname');
@@ -8,24 +9,43 @@ let to = document.getElementById('inputTo');
 let luggage = document.getElementById('bags');
 let storage;
 
+//actions on page upload or reload
 window.onload = function() {
-    //var reloading = sessionStorage.getItem("reloading");
+    //check if localStorage contains valid data for ticket printing
+    //if data ok shows print button
     let storage = JSON.parse(localStorage.getItem('savedBooking'))
-    console.log(storage);
-    console.log(storage.valid);
     if (storage.valid) {
-        //sessionStorage.removeItem("reloading");
-        console.log("test");
         document.getElementById('print').className = ''    
     }
     else
     {
         document.getElementById('print').className = 'd-none'
     }
+    destinations();
 }
-
+//get data from API and populate destination options
+async function destinations (){
+    info = await fetch('https://public.opendatasoft.com/api/records/1.0/search/?dataset=geonames-all-cities-with-a-population-1000')
+     .then(res=>res.json())
+     .then(places=>{
+         console.log(places);
+         let optionList = document.querySelector('.city');
+         let optionList2 = document.querySelector('.cityTo');
+         for (let index = 0; index < places.records.length; index++) {
+                let option = document.createElement('option');
+                option.value = places.records[index].fields.name;
+                option.innerText = places.records[index].fields.name;
+                optionList.appendChild(option);
+                let option2 = document.createElement('option');
+                option2.value = places.records[index].fields.name;
+                option2.innerText = places.records[index].fields.name;
+                optionList2.appendChild(option2);
+         }
+     })
+};
+// onsubmit function is triggered by pressing BookNow button
+// form validation, data load to localStorage
 forma.onsubmit = function (e) {
-  //      e.preventDefault();
         let flight = new Flight();
         if(name.value === '' 
         || surname.value === '' 
@@ -56,7 +76,7 @@ forma.onsubmit = function (e) {
         }
       }
 
-
+//flight object constractor
 function Flight(number, 
                 userName,
                 userSurName,
@@ -82,37 +102,12 @@ function Flight(number,
      return flight;
 };
 
-(function(){
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function(){
-        if (xhr.readyState === 4) {
-            var places = JSON.parse(xhr.responseText);
-            let optionList = document.querySelector('.city');
-            let optionList2 = document.querySelector('.cityTo');
-            for (let index = 0; index < places.records.length; index++) {
-                   let option = document.createElement('option');
-                   option.value = places.records[index].fields.name;
-                   option.innerText = places.records[index].fields.name;
-                   optionList.appendChild(option);
-                   let option2 = document.createElement('option');
-                   option2.value = places.records[index].fields.name;
-                   option2.innerText = places.records[index].fields.name;
-                   optionList2.appendChild(option2);
-            }
-        }
-    }
 
-    xhr.open('GET', 'https://public.opendatasoft.com/api/records/1.0/search/?dataset=geonames-all-cities-with-a-population-1000');
-    xhr.send();
-   })();
-
-
+// button "Cheap flights booking" on click function shows form
     document.querySelector('.booking').onclick= function(){
-      //  storage = JSON.parse(localStorage.getItem('savedBooking'))
-      //  console.log(storage);
         document.querySelector('#formShow').className = '';
      }
-     
+  // button "Print details of your flight" on click function shows modal window   
     document.querySelector('.print').onclick= function(){
     document.querySelector('#formShow').className = 'd-none'    
     storage = JSON.parse(localStorage.getItem('savedBooking'))
@@ -134,6 +129,30 @@ function Flight(number,
     document.getElementById('luggage').innerHTML = "Luggage fee: " + fee + " USD";
     document.getElementById('total').innerHTML = "Total: " + total + " USD";
      }
+
+     //this function is not used on this page version
+    function getByHttpRequest(){
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function(){
+            if (xhr.readyState === 4) {
+                var places = JSON.parse(xhr.responseText);
+                let optionList = document.querySelector('.city');
+                let optionList2 = document.querySelector('.cityTo');
+                for (let index = 0; index < places.records.length; index++) {
+                    let option = document.createElement('option');
+                    option.value = places.records[index].fields.name;
+                    option.innerText = places.records[index].fields.name;
+                    optionList.appendChild(option);
+                    let option2 = document.createElement('option');
+                    option2.value = places.records[index].fields.name;
+                    option2.innerText = places.records[index].fields.name;
+                    optionList2.appendChild(option2);
+                }
+            }
+        }
+        xhr.open('GET', 'https://public.opendatasoft.com/api/records/1.0/search/?dataset=geonames-all-cities-with-a-population-1000');
+        xhr.send();
+    }
 
 
  
